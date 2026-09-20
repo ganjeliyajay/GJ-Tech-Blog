@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --bg-primary: #080c14;
+  --bg-secondary: #0e1526;
+  --bg-card: #111a2e;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-cyan: #06b6d4;
+  --accent-blue: #38bdf8;
+  --accent-indigo: #6366f1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+/* Developer grid pattern */
+.tech-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 40px -10px rgba(6, 182, 212, 0.3);
+}
+
+.glow-blue {
+  box-shadow: 0 0 50px -10px rgba(56, 189, 248, 0.35);
+}
+
+.glow-purple {
+  box-shadow: 0 0 50px -10px rgba(168, 85, 247, 0.3);
+}
+
+/* Infinite Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Terminal Cursor Blink */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor {
+  animation: cursorBlink 1s step-start infinite;
+}
+
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.animate-skeleton-shimmer {
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
