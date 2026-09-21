@@ -9,6 +9,7 @@ import {
   InstagramIcon,
 } from "@/components/icons/SocialIcons"
 import { useToast } from "@/context/ToastContext"
+import Image from "next/image"
 
 export default function Footer() {
   const { showToast } = useToast()
@@ -27,26 +28,42 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-violet-600 font-mono font-black text-slate-950 text-sm shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-                GJ
+            <Link
+              href="/"
+              className="group inline-flex items-center gap-3"
+            >
+              {/* Logo */}
+              <div className="relative flex items-center justify-center h-10 w-10 rounded-xl overflow-hidden bg-[#080c14] border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.35)] group-hover:scale-105 group-hover:border-cyan-400/40 group-hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300">
+                <Image
+                  src="/icon.svg"
+                  alt="GJ Tech"
+                  width={40}
+                  height={40}
+                  priority
+                  className="h-10 w-10 object-contain scale-110"
+                />
               </div>
-              <div>
-                <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-mono">
+
+              {/* Brand Text */}
+              <div className="flex flex-col">
+                <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-mono group-hover:text-cyan-400 transition-colors duration-300">
                   GJ Tech
                 </span>
+
                 <span className="block text-[10px] text-cyan-500 font-mono tracking-wider">
                   DEV PUBLICATION
                 </span>
               </div>
             </Link>
 
+            {/* Description */}
             <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm leading-relaxed">
               Building, learning and sharing ideas about the modern web. Curated
               tutorials, architectural teardowns, and deep-dive engineering
               manuals.
             </p>
 
+            {/* Social Links */}
             <div className="flex items-center gap-3 pt-2">
               <a
                 href="https://github.com/ganjeliyajay/"
@@ -58,6 +75,7 @@ export default function Footer() {
               >
                 <GithubIcon className="w-4 h-4" />
               </a>
+
               <a
                 href="https://www.linkedin.com/in/ganjeliya-jay/"
                 target="_blank"
@@ -68,6 +86,7 @@ export default function Footer() {
               >
                 <LinkedinIcon className="w-4 h-4" />
               </a>
+
               <a
                 href="https://www.instagram.com/ganjeliya_jay_0745"
                 target="_blank"

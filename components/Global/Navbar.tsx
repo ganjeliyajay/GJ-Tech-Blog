@@ -7,6 +7,7 @@ import { Search, Menu, Sparkles } from "lucide-react";
 
 import SearchModal from "./SearchModal";
 import MobileMenu from "./MobileMenu";
+import Image from "next/image";
 
 type SectionId =
   | "home"
@@ -294,11 +295,10 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
-          scrolled
-            ? "bg-[#080c14]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-[0_4px_25px_rgba(0,0,0,0.4)]"
-            : "bg-[#080c14]/40 backdrop-blur-sm border-b border-transparent"
-        }`}
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${scrolled
+          ? "bg-[#080c14]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-[0_4px_25px_rgba(0,0,0,0.4)]"
+          : "bg-[#080c14]/40 backdrop-blur-sm border-b border-transparent"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           <Link
@@ -311,8 +311,15 @@ export default function Navbar() {
               }
             }}
           >
-            <div className="relative flex items-center justify-center h-10 w-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-violet-600 font-mono font-black text-slate-950 text-sm shadow-[0_0_20px_rgba(6,182,212,0.35)] group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all">
-              GJ
+            <div className="relative flex items-center justify-center h-10 w-10 rounded-xl overflow-hidden bg-[#080c14] shadow-[0_0_20px_rgba(6,182,212,0.35)] group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all">
+              <Image
+                src="/icon.svg"
+                alt="GJ Tech"
+                width={40}
+                height={40}
+               className="h-10 w-10 object-contain scale-125"
+                priority
+              />
 
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping opacity-75" />
             </div>
@@ -350,11 +357,10 @@ export default function Navbar() {
                   aria-current={
                     isActive ? "page" : undefined
                   }
-                  className={`relative px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
-                    isActive
-                      ? "text-cyan-400 font-semibold"
-                      : "text-slate-300 hover:text-white"
-                  }`}
+                  className={`relative px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${isActive
+                    ? "text-cyan-400 font-semibold"
+                    : "text-slate-300 hover:text-white"
+                    }`}
                 >
                   {link.name}
 
