@@ -15,8 +15,6 @@ export default function RelatedArticles({
   currentArticle,
   articles,
 }: RelatedArticlesProps) {
-  // Same category articles first,
-  // then other articles as fallback
   const related = [...articles]
     .filter((article) => article.id !== currentArticle.id)
     .sort((a, b) => {

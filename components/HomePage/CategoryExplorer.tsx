@@ -17,9 +17,6 @@ export default function CategoryExplorer({
   selectedCategory,
   onSelectCategory,
 }: CategoryExplorerProps) {
-  /*
-   * Build categories dynamically from Sanity posts
-   */
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
       new Set(
@@ -100,8 +97,8 @@ export default function CategoryExplorer({
                 key={cat}
                 onClick={() => onSelectCategory(cat)}
                 className={`relative px-4 py-2.5 rounded-xl text-xs sm:text-sm font-mono whitespace-nowrap transition-colors duration-200 flex items-center gap-2 shrink-0 border ${isSelected
-                    ? 'text-slate-950 font-bold border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
-                    : 'text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 hover:border-slate-400 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
+                  ? 'text-slate-950 font-bold border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
+                  : 'text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 hover:border-slate-400 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
               >
                 {isSelected && (
@@ -122,8 +119,8 @@ export default function CategoryExplorer({
 
                 <span
                   className={`relative z-10 px-1.5 py-0.5 rounded-md text-[10px] font-bold ${isSelected
-                      ? 'bg-slate-950/20 text-slate-950'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                    ? 'bg-slate-950/20 text-slate-950'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
                     }`}
                 >
                   {count}

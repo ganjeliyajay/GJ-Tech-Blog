@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 
 export const postsQuery = groq`
-  *[_type == "post"]{
+  *[_type == "post"]| order(date desc){
     "id": _id,
     "slug": slug.current,
     title,
@@ -41,7 +41,6 @@ export const postsQuery = groq`
     }
   }
 `;
-
 
 export const postBySlugQuery = groq`
 *[_type == 'post' && slug.current == $slug][0]{
@@ -86,7 +85,6 @@ export const postBySlugQuery = groq`
 
 `
 
-
 export const featuredArticleQuery = groq`
   *[
     _type == "post" &&
@@ -110,6 +108,12 @@ export const featuredArticleQuery = groq`
     date,
     excerpt
   }
+`;
+
+export const categoriesQuery = groq`
+  array::unique(
+    *[_type == "post" && defined(category)].category
+  )
 `;
 
 export const authorQuery = groq`

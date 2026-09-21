@@ -172,7 +172,12 @@ export default function SearchModal({
           );
 
           setResults(uniqueResults);
-          setCategories(uniqueCategories);
+          setCategories(
+            rawCategories.filter(
+              (category: unknown): category is string =>
+                typeof category === "string" && category.trim().length > 0
+            )
+          );
         } catch (err) {
           if (
             (err as Error).name ===
@@ -331,9 +336,9 @@ export default function SearchModal({
                         )
                       }
                       className={`whitespace-nowrap rounded-lg px-2.5 py-1 font-mono transition-colors ${selectedCategory ===
-                          category
-                          ? "bg-cyan-500 font-semibold text-slate-950"
-                          : "bg-slate-800/80 text-slate-400 hover:bg-slate-700"
+                        category
+                        ? "bg-cyan-500 font-semibold text-slate-950"
+                        : "bg-slate-800/80 text-slate-400 hover:bg-slate-700"
                         }`}
                     >
                       {category}

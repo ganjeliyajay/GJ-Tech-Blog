@@ -71,7 +71,7 @@ export default function BlogDetailView({
         style={{ scaleX }}
       />
 
-      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+      <article key={article.id} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
 
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 mb-8 overflow-x-auto whitespace-nowrap pb-1">
@@ -252,13 +252,12 @@ export default function BlogDetailView({
                 {/* Callout */}
                 {section.callout?.text && (
                   <div
-                    className={`p-4 sm:p-5 rounded-2xl border flex items-start gap-3.5 my-4 ${
-                      section.callout.type === 'tip'
-                        ? 'border-cyan-500/30 bg-cyan-500/10 text-cyan-900 dark:text-cyan-200'
-                        : section.callout.type === 'important'
-                          ? 'border-amber-500/30 bg-amber-500/10 text-amber-900 dark:text-amber-200'
-                          : 'border-indigo-500/30 bg-indigo-500/10 text-indigo-900 dark:text-indigo-200'
-                    }`}
+                    className={`p-4 sm:p-5 rounded-2xl border flex items-start gap-3.5 my-4 ${section.callout.type === 'tip'
+                      ? 'border-cyan-500/30 bg-cyan-500/10 text-cyan-900 dark:text-cyan-200'
+                      : section.callout.type === 'important'
+                        ? 'border-amber-500/30 bg-amber-500/10 text-amber-900 dark:text-amber-200'
+                        : 'border-indigo-500/30 bg-indigo-500/10 text-indigo-900 dark:text-indigo-200'
+                      }`}
                   >
 
                     {section.callout.type === 'tip' && (
@@ -311,25 +310,32 @@ export default function BlogDetailView({
             ))}
 
             {/* Tags */}
+            {/* Tags */}
             {article.tags?.length ? (
               <div className="pt-8 border-t border-slate-200 dark:border-slate-800 space-y-3">
-
                 <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Article Tags
                 </span>
 
                 <div className="flex flex-wrap gap-2">
-
-                  {article.tags.map((tag) => (
+                  {Array.from(
+                    new Set(
+                      article.tags
+                        .filter(
+                          (tag): tag is string =>
+                            typeof tag === "string" && tag.trim().length > 0,
+                        )
+                        .map((tag) => tag.trim()),
+                    ),
+                  ).map((tag) => (
                     <span
-                      key={tag}
+                      key={`article-tag-${tag}`}
                       className="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/60"
                     >
                       <Tag className="w-3 h-3 text-cyan-400" />
                       {tag}
                     </span>
                   ))}
-
                 </div>
               </div>
             ) : null}

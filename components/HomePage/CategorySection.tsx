@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import CategoryExplorer from './CategoryExplorer';
 import ArticleGrid from './ArticleGrid';
 import { CategoryFilter, Article } from '@/types/blog';
+import { useToast } from '@/context/ToastContext';
 
 interface CategorySectionProps {
   posts: Article[];
@@ -12,6 +13,9 @@ interface CategorySectionProps {
 export default function CategorySection({
   posts,
 }: CategorySectionProps) {
+
+  const { showToast } = useToast();
+
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -21,7 +25,7 @@ export default function CategorySection({
           return catParam as CategoryFilter;
         }
       } catch {
-        // ignore
+        showToast('Something went wrong', 'error');
       }
     }
     return 'All';
@@ -38,7 +42,7 @@ export default function CategorySection({
           setSelectedCategory('All');
         }
       } catch {
-        // ignore
+        showToast('Something went wrong', 'error');
       }
     };
 
@@ -50,8 +54,8 @@ export default function CategorySection({
     selectedCategory === 'All'
       ? posts
       : posts.filter(
-          (post) => post.category === selectedCategory
-        );
+        (post) => post.category === selectedCategory
+      );
 
   return (
     <>

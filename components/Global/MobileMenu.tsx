@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { X, Search, Sparkles, BookOpen, Layers, User, ArrowRight } from 'lucide-react';
-import { CATEGORIES } from '@/data/articles';
 import { lockScroll, unlockScroll } from '@/lib/scrollLock';
 
 interface MobileMenuProps {
@@ -14,6 +13,7 @@ interface MobileMenuProps {
   onOpenSubscribe: () => void;
   activeSection?: string;
   onNavigateSection?: (sectionId: string) => void;
+  categories?: string[];
 }
 
 export default function MobileMenu({
@@ -23,6 +23,7 @@ export default function MobileMenu({
   onOpenSubscribe,
   activeSection = 'home',
   onNavigateSection,
+  categories = [],
 }: MobileMenuProps) {
   useEffect(() => {
     if (isOpen) {
@@ -63,7 +64,7 @@ export default function MobileMenu({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-50 md:hidden"
           role="dialog"
           aria-modal="true"
@@ -132,11 +133,10 @@ export default function MobileMenu({
                       key={link.name}
                       href={link.href}
                       onClick={() => handleLinkClick(link.id)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-xl font-medium transition ${
-                        isActive
+                      className={`flex items-center justify-between px-4 py-3 rounded-xl font-medium transition ${isActive
                           ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 font-semibold'
                           : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-400 dark:text-slate-500'}`} />
@@ -154,7 +154,7 @@ export default function MobileMenu({
                   Key Technologies
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {CATEGORIES.slice(0, 8).map((cat) => (
+                  {categories.slice(0, 8).map((cat) => (
                     <Link
                       key={cat}
                       href={`/?category=${encodeURIComponent(cat)}#categories`}

@@ -103,6 +103,7 @@ export const postType = defineType({
             name: "date",
             title: "Published Date",
             type: "date",
+            initialValue: () => new Date().toISOString().split("T")[0],
         }),
 
         defineField({
