@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 
 export const postsQuery = groq`
-  *[_type == "post"]| order(date desc){
+  *[_type == "post"] | order(date desc) {
     "id": _id,
     "slug": slug.current,
     title,
@@ -9,7 +9,7 @@ export const postsQuery = groq`
     category,
     tags,
 
-    author{
+    author {
       name,
       role,
       "avatar": avatar.asset->url
@@ -21,19 +21,19 @@ export const postsQuery = groq`
     featured,
     trendingRank,
 
-    sections[]{
+    sections[] {
       id,
       title,
       content,
 
       bullets[],
 
-      callout{
+      callout {
         type,
         text
       },
 
-      codeSnippet{
+      codeSnippet {
         language,
         filename,
         code
@@ -43,7 +43,7 @@ export const postsQuery = groq`
 `;
 
 export const postBySlugQuery = groq`
-*[_type == 'post' && slug.current == $slug][0]{
+  *[_type == "post" && slug.current == $slug][0] {
     "id": _id,
     "slug": slug.current,
     title,
@@ -51,7 +51,7 @@ export const postBySlugQuery = groq`
     category,
     tags,
 
-    author{
+    author {
       name,
       role,
       "avatar": avatar.asset->url
@@ -63,34 +63,33 @@ export const postBySlugQuery = groq`
     featured,
     trendingRank,
 
-    sections[]{
+    sections[] {
       id,
       title,
       content,
 
       bullets[],
 
-      callout{
+      callout {
         type,
         text
       },
 
-      codeSnippet{
+      codeSnippet {
         language,
         filename,
         code
       }
     }
-}
-
-`
+  }
+`;
 
 export const featuredArticleQuery = groq`
   *[
     _type == "post" &&
     featured == true
   ]
-  | order(date desc)[0]{
+  | order(date desc)[0] {
     "id": _id,
     title,
     "image": image.asset->url,
@@ -98,7 +97,7 @@ export const featuredArticleQuery = groq`
     tags,
     readingTime,
 
-    author{
+    author {
       name,
       role,
       "avatar": avatar.asset->url
@@ -112,19 +111,23 @@ export const featuredArticleQuery = groq`
 
 export const categoriesQuery = groq`
   array::unique(
-    *[_type == "post" && defined(category)].category
+    *[
+      _type == "post" &&
+      defined(category)
+    ].category
   )
 `;
 
 export const authorQuery = groq`
-  *[_type == "author"][0]{
+  *[_type == "author"][0] {
     "id": _id,
     name,
     role,
     bio,
     "avatar": avatar.asset->url,
     skills,
-    socials{
+
+    socials {
       github,
       linkedin,
       twitter,
@@ -135,7 +138,7 @@ export const authorQuery = groq`
 `;
 
 export const searchPostsQuery = groq`
-  *[_type == "post"] | order(date desc){
+  *[_type == "post"] | order(date desc) {
     "id": _id,
     "slug": slug.current,
     title,
@@ -145,7 +148,8 @@ export const searchPostsQuery = groq`
     readingTime,
     date,
     "image": image.asset->url,
-    sections[]{
+
+    sections[] {
       title,
       content
     }

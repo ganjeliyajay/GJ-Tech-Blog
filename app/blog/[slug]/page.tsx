@@ -1,13 +1,15 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { client } from '@/lib/sanity';
+import { client } from "@/lib/sanity";
+
 import {
   postBySlugQuery,
   postsQuery,
-} from '@/lib/queries';
-import BlogDetailView from '@/components/BlogDetails/BlogDetailView';
-import Newsletter from '@/components/HomePage/Newsletter';
+} from "@/lib/queries";
+
+import BlogDetailView from "@/components/BlogDetails/BlogDetailView";
+import Newsletter from "@/components/HomePage/Newsletter";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -15,35 +17,73 @@ interface BlogPostPageProps {
   }>;
 }
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = await client.fetch(postBySlugQuery, { slug });
+
+  const article = await client.fetch(
+    postBySlugQuery,
+    { slug },
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!article) {
     return {
-      title: 'Article Not Found — GJ Tech',
+      title: "Article Not Found — GJ Tech",
     };
   }
 
   return {
     title: `${article.title} — GJ Tech`,
-    description: article.excerpt || 'Practical engineering guide on GJ Tech.',
+
+    description:
+      article.excerpt ||
+      "Practical engineering guide on GJ Tech.",
+
     keywords: article.tags || [],
-    authors: article.author?.name ? [{ name: article.author.name }] : undefined,
+
+    authors: article.author?.name
+      ? [{ name: article.author.name }]
+      : undefined,
+
     openGraph: {
       title: article.title,
-      description: article.excerpt,
-      type: 'article',
+
+      description:
+        article.excerpt ||
+        "Practical engineering guide on GJ Tech.",
+
+      type: "article",
+
       publishedTime: article.date,
-      images: article.image ? [{ url: article.image }] : undefined,
+
+      images: article.image
+        ? [
+          {
+            url: article.image,
+          },
+        ]
+        : undefined,
     },
+
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
+
       title: article.title,
-      description: article.excerpt,
-      images: article.image ? [article.image] : undefined,
+
+      description:
+        article.excerpt ||
+        "Practical engineering guide on GJ Tech.",
+
+      images: article.image
+        ? [article.image]
+        : undefined,
     },
   };
 }
@@ -54,8 +94,21 @@ export default async function BlogPostPage({
   const { slug } = await params;
 
   const [article, articles] = await Promise.all([
-    client.fetch(postBySlugQuery, { slug }),
-    client.fetch(postsQuery),
+    client.fetch(
+      postBySlugQuery,
+      { slug },
+      {
+        cache: "no-store",
+      }
+    ),
+
+    client.fetch(
+      postsQuery,
+      {},
+      {
+        cache: "no-store",
+      }
+    ),
   ]);
 
   if (!article) {
@@ -64,18 +117,14 @@ export default async function BlogPostPage({
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#080c14] text-slate-900 dark:text-slate-100 transition-colors duration-300">
-
       <main className="flex-1">
-
         <BlogDetailView
           article={article}
           articles={articles}
         />
 
         <Newsletter />
-
       </main>
-
     </div>
   );
 }

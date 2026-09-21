@@ -17,13 +17,35 @@ import {
 
 import { getTopicsFromPosts } from "@/lib/topics";
 
-export default async function HomePage() {
-  const [featuredArticle, posts] = await Promise.all([
-    client.fetch(featuredArticleQuery),
-    client.fetch(postsQuery),
-  ]);
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-  const author = await client.fetch(authorQuery);
+export default async function HomePage() {
+  const [featuredArticle, posts, author] = await Promise.all([
+    client.fetch(
+      featuredArticleQuery,
+      {},
+      {
+        cache: "no-store",
+      }
+    ),
+
+    client.fetch(
+      postsQuery,
+      {},
+      {
+        cache: "no-store",
+      }
+    ),
+
+    client.fetch(
+      authorQuery,
+      {},
+      {
+        cache: "no-store",
+      }
+    ),
+  ]);
 
   const topics = getTopicsFromPosts(posts);
 
@@ -42,9 +64,13 @@ export default async function HomePage() {
 
         <TrendingArticles article={posts} />
 
-        <DeveloperTopicsSection topics={topics} />
+        <DeveloperTopicsSection
+          topics={topics}
+        />
 
-        <AuthorSection author={author} />
+        <AuthorSection
+          author={author}
+        />
 
         <Newsletter />
       </main>
