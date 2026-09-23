@@ -7,6 +7,40 @@ export const postType = defineType({
 
     fields: [
         defineField({
+            name: "language",
+            title: "Language",
+            type: "string",
+            options: {
+                list: [
+                    {
+                        title: "English",
+                        value: "en",
+                    },
+                    {
+                        title: "Gujarati",
+                        value: "gu",
+                    },
+                    {
+                        title: "Hindi",
+                        value: "hi",
+                    },
+                ],
+                layout: "radio",
+            },
+            initialValue: "en",
+            validation: (Rule) => Rule.required(),
+        }),
+
+        defineField({
+            name: "translationId",
+            title: "Translation Group ID",
+            description:
+                "Use the same Translation Group ID for English, Gujarati and Hindi versions of the same article.",
+            type: "string",
+            validation: (Rule) => Rule.required(),
+        }),
+
+        defineField({
             name: "title",
             title: "Title",
             type: "string",

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 import {
   Sparkles,
@@ -10,7 +10,10 @@ import {
   Calendar,
   ArrowRight,
   User,
-} from 'lucide-react';
+} from "lucide-react";
+
+import { useTranslations } from "@/lib/i18n/useTranslations";
+import { localizedPath } from "@/lib/i18n/routes";
 
 interface FeaturedArticleData {
   id: string;
@@ -36,11 +39,13 @@ interface FeaturedArticleProps {
 export default function FeaturedArticle({
   featuredArticle,
 }: FeaturedArticleProps) {
+  const { t,locale } = useTranslations();
+
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   if (!featuredArticle) {
-    return null
+    return null;
   }
 
   return (
@@ -56,19 +61,19 @@ export default function FeaturedArticle({
             </span>
 
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-sans">
-              Featured Editorial
+              {t.featuredArticle.title}
             </h2>
           </div>
 
           <span className="text-xs font-mono text-cyan-500 uppercase tracking-wider font-semibold">
-            EDITOR&apos;S CHOICE
+            {t.featuredArticle.editorsChoice}
           </span>
         </div>
 
         {/* ================= FEATURED CARD ================= */}
 
         <Link
-          href={`/blog/${featuredArticle?.slug}`}
+          href={`${localizedPath(locale)}/blog/${featuredArticle?.slug}`}
           className="group block relative rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 overflow-hidden shadow-xl hover:shadow-2xl hover:border-cyan-500/50 transition-all duration-500"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
@@ -79,19 +84,21 @@ export default function FeaturedArticle({
 
               {featuredArticle?.image && !imageError ? (
                 <>
-
-
                   <Image
                     src={featuredArticle?.image}
-                    alt={featuredArticle?.title || 'Featured article image'}
+                    alt={
+                      featuredArticle?.title ||
+                      t.featuredArticle.imageAlt
+                    }
                     fill
                     sizes="(max-width: 1024px) 100vw, 58vw"
                     unoptimized
                     priority
-                    className={`object-cover transition-all duration-500 ease-out ${imageLoaded
-                      ? 'opacity-100'
-                      : 'opacity-0'
-                      } group-hover:scale-[1.04]`}
+                    className={`object-cover transition-all duration-500 ease-out ${
+                      imageLoaded
+                        ? "opacity-100"
+                        : "opacity-0"
+                    } group-hover:scale-[1.04]`}
                     onLoad={() => {
                       setImageLoaded(true);
                     }}
@@ -147,7 +154,9 @@ export default function FeaturedArticle({
                     </div>
 
                     <span className="text-xs font-mono text-slate-500">
-                      {imageError ? 'Image unavailable' : 'No Image'}
+                      {imageError
+                        ? t.featuredArticle.imageUnavailable
+                        : t.featuredArticle.noImage}
                     </span>
 
                   </div>
@@ -229,7 +238,10 @@ export default function FeaturedArticle({
                       console.log(featuredArticle?.author?.avatar),
                       <Image
                         src={featuredArticle.author.avatar}
-                        alt={featuredArticle.author.name || 'Author'}
+                        alt={
+                          featuredArticle.author.name ||
+                          t.featuredArticle.author
+                        }
                         fill
                         unoptimized
                         className="object-cover"
@@ -242,11 +254,12 @@ export default function FeaturedArticle({
 
                   <div className="min-w-0">
                     <span className="block text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
-                      {featuredArticle?.author?.name || 'GJ'}
+                      {featuredArticle?.author?.name || "GJ"}
                     </span>
 
                     <span className="block text-xs font-mono text-cyan-600 dark:text-cyan-400 truncate">
-                      {featuredArticle?.author?.role || 'Author'}
+                      {featuredArticle?.author?.role ||
+                        t.featuredArticle.author}
                     </span>
                   </div>
 
@@ -257,7 +270,7 @@ export default function FeaturedArticle({
                 <div className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-600 dark:text-cyan-400 group-hover:translate-x-1 transition-transform">
 
                   <span className="hidden sm:inline">
-                    Read Article
+                    {t.featuredArticle.readArticle}
                   </span>
 
                   <ArrowRight className="w-4 h-4" />

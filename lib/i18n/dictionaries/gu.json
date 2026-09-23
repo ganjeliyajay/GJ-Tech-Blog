@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "home": "હોમ",
+    "categories": "કેટેગરીઝ",
+    "about": "અમારા વિશે",
+    "search": "શોધો",
+    "topics": "વિષયો"
+  },
+
+  "hero": {
+    "badge": "GJ TECH • BUILD • LEARN • SHIP",
+    "code": "કોડ.",
+    "create": "બનાવો.",
+    "build": "બિલ્ડ કરો.",
+    "evolve": "વિકસિત કરો.",
+    "description": "આગામી પેઢીની ટેક્નોલોજી બનાવી રહેલા ડેવલપર્સ માટે real-world development insights, practical tutorials અને ઉપયોગી ideas. React, Next.js, Node.js, AI, APIs, scalable architectures અને ઘણું બધું જાણો.",
+    "exploreArticles": "લેખો જુઓ",
+    "exploreTechTopics": "ટેક વિષયો જુઓ",
+    "deepDiveGuides": "વિસ્તૃત માર્ગદર્શિકાઓ",
+    "techTopics": "ટેક વિષયો",
+    "developerFocus": "ડેવલપર ફોકસ"
+  },
+
+  "featuredArticle": {
+    "title": "વિશેષ લેખ",
+    "editorsChoice": "સંપાદકની પસંદગી",
+    "imageAlt": "વિશેષ લેખની છબી",
+    "imageUnavailable": "છબી ઉપલબ્ધ નથી",
+    "noImage": "છબી નથી",
+    "author": "લેખક",
+    "readArticle": "લેખ વાંચો"
+  },
+
+  "categories": {
+    "discoverContent": "કન્ટેન્ટ શોધો",
+    "exploreByTechnology": "ટેક્નોલોજી પ્રમાણે શોધો",
+    "active": "સક્રિય:",
+    "article": "લેખ",
+    "articles": "લેખો"
+  },
+
+  "trendingArticles": {
+    "title": "આ અઠવાડિયાના ટ્રેન્ડિંગ લેખો",
+    "highReadership": "વધુ વાંચવામાં આવતા",
+    "author": "લેખક",
+    "noArticles": "હજુ સુધી કોઈ ટ્રેન્ડિંગ લેખ નથી.",
+    "sanityInstruction": "Sanity Studio માં લેખોને trending rank આપો."
+  },
+
+  "developerTopics": {
+    "ecosystemArchitecture": "ઇકોસિસ્ટમ આર્કિટેક્ચર",
+    "title": "ટેક્નોલોજી ઇકોસિસ્ટમ",
+    "description": "કોર એન્જિનથી લઈને ક્લાઉડ ઇન્ફ્રાસ્ટ્રક્ચર સુધીના આધુનિક વેબ ડેવલપર ટૂલચેનને આવરી લેતા પસંદ કરેલા ટોપિક ટ્રેક્સ.",
+    "specializedTracks": "વિશિષ્ટ ટ્રેક્સ",
+    "noTopics": "હજુ સુધી કોઈ ટેક્નોલોજી વિષયો ઉપલબ્ધ નથી.",
+    "noTopicsDescription": "બ્લોગ પોસ્ટ્સ પ્રકાશિત થશે ત્યારે વિષયો આપમેળે અહીં દેખાશે."
+  },
+
+  "authorSection": {
+    "active": "સક્રિય",
+    "opening": "ખોલી રહ્યા છીએ",
+    "profile": "પ્રોફાઇલ",
+    "editorialPerspective": "સંપાદકીય દૃષ્ટિકોણ",
+    "heading": "ડેવલપર દ્વારા, ડેવલપર્સ માટે બનાવવામાં આવ્યું.",
+    "coreEngineeringArsenal": "મુખ્ય એન્જિનિયરિંગ કૌશલ્યો",
+    "viewPortfolio": "મારો પોર્ટફોલિયો જુઓ"
+  },
+
+  "newsletter": {
+    "badge": "સાપ્તાહિક આર્કિટેક્ચરલ ડિસ્પેચ",
+    "title": "તમારા ડેવલપમેન્ટને વધુ આગળ વધારો",
+    "description": "પ્રેક્ટિકલ ટ્યુટોરિયલ્સ, ડેવલપર ટિપ્સ અને ટેક્નોલોજી ઇન્સાઇટ્સ સીધી તમારા ઇનબોક્સમાં મેળવો. કોઈ સ્પામ નહીં. માત્ર શુદ્ધ એન્જિનિયરિંગ.",
+    "invalidEmail": "કૃપા કરીને માન્ય ડેવલપર ઇમેઇલ એડ્રેસ આપો",
+    "subscribeError": "સબસ્ક્રાઇબ કરવામાં સમસ્યા આવી. કૃપા કરીને ફરી પ્રયાસ કરો.",
+    "alreadySubscribed": "તમે પહેલેથી જ GJ Tech પર સબસ્ક્રાઇબ કરેલ છે.",
+    "successMessage": "GJ Tech માં આપનું સ્વાગત છે! પ્રેક્ટિકલ ઇન્સાઇટ્સ ટૂંક સમયમાં આવશે.",
+    "subscribe": "સબસ્ક્રાઇબ કરો",
+    "genericError": "કંઈક ખોટું થયું. કૃપા કરીને ફરી પ્રયાસ કરો.",
+    "subscriptionConfirmed": "સબસ્ક્રિપ્શન કન્ફર્મ થયું!",
+    "communityMessage": "હવે તમે GJ Tech community નો ભાગ છો.",
+    "emailPlaceholder": "developer@company.com",
+    "subscribing": "સબસ્ક્રાઇબ થઈ રહ્યું છે...",
+    "joinNewsletter": "ન્યૂઝલેટરમાં જોડાઓ",
+    "privacyNote": "1-click દ્વારા ગમે ત્યારે unsubscribe કરો. તમારી માહિતી ક્યારેય શેર કરવામાં આવતી નથી."
+  },
+
+  "footer": {
+    "devPublication": "ડેવ પબ્લિકેશન",
+    "description": "આધુનિક વેબ વિશે બિલ્ડિંગ, લર્નિંગ અને આઇડિયાઝ શેર કરવી. પસંદ કરેલા ટ્યુટોરિયલ્સ, આર્કિટેક્ચરલ વિશ્લેષણ અને ડીપ-ડાઇવ એન્જિનિયરિંગ મેન્યુઅલ્સ.",
+    "explore": "શોધો",
+    "categories": "કેટેગરીઝ",
+    "about": "અમારા વિશે",
+    "topics": "વિષયો",
+    "connect": "જોડાઓ",
+    "backToTop": "ઉપર જાઓ",
+    "copyright": "© 2026 GJ Tech. Built with Next.js.",
+    "designedForBuilders": "બિલ્ડર્સ માટે ડિઝાઇન કરેલું",
+    "byAuthor": "Ganjeliya Jay દ્વારા",
+    "opening": "ખોલી રહ્યા છીએ",
+    "profile": "પ્રોફાઇલ"
+  },
+  "blogDetails": {
+  "articleNotFound": "લેખ મળ્યો નથી",
+  "backToHome": "હોમ પર પાછા જાઓ",
+  "home": "હોમ",
+  "articles": "લેખો",
+  "author": "લેખક",
+  "unknownAuthor": "અજ્ઞાત લેખક",
+  "articleTags": "લેખના ટૅગ્સ",
+  "writtenBy": "લેખક",
+  "authorBio": "પ્રેક્ટિકલ સોફ્ટવેર ડેવલપમેન્ટ, આધુનિક વેબ ટેક્નોલોજી અને scalable application patterns વિશે ઉપયોગી માહિતી."
+}
+}

@@ -1,13 +1,21 @@
 import { groq } from "next-sanity";
 
+
 export const postsQuery = groq`
-  *[_type == "post"] | order(date desc) {
+  *[
+    _type == "post" &&
+    language == $locale
+  ]
+  | order(date desc) {
     "id": _id,
     "slug": slug.current,
     title,
     excerpt,
     category,
     tags,
+
+    language,
+    translationId,
 
     author {
       name,
@@ -43,13 +51,20 @@ export const postsQuery = groq`
 `;
 
 export const postBySlugQuery = groq`
-  *[_type == "post" && slug.current == $slug][0] {
+  *[
+    _type == "post" &&
+    slug.current == $slug &&
+    language == $locale
+  ][0] {
     "id": _id,
     "slug": slug.current,
     title,
     excerpt,
     category,
     tags,
+
+    language,
+    translationId,
 
     author {
       name,
@@ -87,6 +102,7 @@ export const postBySlugQuery = groq`
 export const featuredArticleQuery = groq`
   *[
     _type == "post" &&
+    language == $locale &&
     featured == true
   ]
   | order(date desc)[0] {
@@ -96,6 +112,9 @@ export const featuredArticleQuery = groq`
     "slug": slug.current,
     tags,
     readingTime,
+
+    language,
+    translationId,
 
     author {
       name,
@@ -113,6 +132,7 @@ export const categoriesQuery = groq`
   array::unique(
     *[
       _type == "post" &&
+      language == $locale &&
       defined(category)
     ].category
   )
@@ -138,7 +158,11 @@ export const authorQuery = groq`
 `;
 
 export const searchPostsQuery = groq`
-  *[_type == "post"] | order(date desc) {
+  *[
+    _type == "post" &&
+    language == $locale
+  ]
+  | order(date desc) {
     "id": _id,
     "slug": slug.current,
     title,
@@ -149,9 +173,37 @@ export const searchPostsQuery = groq`
     date,
     "image": image.asset->url,
 
+    language,
+    translationId,
+
     sections[] {
       title,
       content
     }
+  }
+`;
+
+export const translationVariantsQuery = groq`
+  *[
+    _type == "post" &&
+    translationId == $translationId
+  ] {
+    "id": _id,
+    "slug": slug.current,
+    title,
+    language,
+    translationId
+  }
+`;
+export const postBySlugAnyLocaleQuery = groq`
+  *[
+    _type == "post" &&
+    slug.current == $slug
+  ][0] {
+    "id": _id,
+    "slug": slug.current,
+    title,
+    language,
+    translationId
   }
 `;

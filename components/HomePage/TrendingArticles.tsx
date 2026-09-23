@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 
 import { Article } from "@/types/blog";
+import { useTranslations } from "@/lib/i18n/useTranslations";
+import { localizedPath } from "@/lib/i18n/routes";
 
 interface TrendingArticlesProps {
   article: Article[];
@@ -20,6 +22,8 @@ interface TrendingArticlesProps {
 export default function TrendingArticles({
   article,
 }: TrendingArticlesProps) {
+  const { t, locale } = useTranslations();
+
   const safeArticles = Array.isArray(article)
     ? article
     : [];
@@ -40,6 +44,7 @@ export default function TrendingArticles({
   return (
     <section className="py-12 border-y border-slate-800/80 bg-slate-950/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
             <span className="p-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">
@@ -47,12 +52,12 @@ export default function TrendingArticles({
             </span>
 
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-sans">
-              Trending This Week
+              {t.trendingArticles.title}
             </h2>
           </div>
 
           <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">
-            HIGH READERSHIP
+            {t.trendingArticles.highReadership}
           </span>
         </div>
 
@@ -66,7 +71,7 @@ export default function TrendingArticles({
               return (
                 <Link
                   key={item.id}
-                  href={`/blog/${item.slug}`}
+                  href={`${localizedPath(locale)}/blog/${item.slug}`}
                   className="group relative flex items-start gap-4 p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-cyan-500/40 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <div className="font-mono text-3xl sm:text-4xl font-black tracking-tighter text-slate-700 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-br group-hover:from-cyan-400 group-hover:to-indigo-500 transition-all select-none shrink-0 w-12">
@@ -105,7 +110,7 @@ export default function TrendingArticles({
                               src={item.author.avatar}
                               alt={
                                 item.author.name ||
-                                "Author"
+                                t.trendingArticles.author
                               }
                               fill
                               sizes="28px"
@@ -125,7 +130,7 @@ export default function TrendingArticles({
 
                           <span className="block text-[9px] font-mono text-cyan-400 truncate">
                             {item.author?.role ||
-                              "Author"}
+                              t.trendingArticles.author}
                           </span>
                         </div>
                       </div>
@@ -142,12 +147,11 @@ export default function TrendingArticles({
             <TrendingUp className="w-8 h-8 mx-auto mb-3 text-slate-500" />
 
             <p className="text-sm font-medium text-slate-400">
-              No trending articles yet.
+              {t.trendingArticles.noArticles}
             </p>
 
             <p className="text-xs text-slate-500 mt-1">
-              Mark articles with a trending rank from
-              Sanity Studio.
+              {t.trendingArticles.sanityInstruction}
             </p>
           </div>
         )}

@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Layers } from 'lucide-react';
 import DeveloperTerminal from '../BlogDetails/DeveloperTerminal';
+import { useTranslations } from '@/lib/i18n/useTranslations';
 
 export default function Hero() {
+  const { t } = useTranslations();
   return (
     <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 border-b border-slate-200/60 dark:border-slate-800/80">
       {/* Background Decorative Tech Grid & Gradients */}
@@ -27,30 +29,28 @@ export default function Hero() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 dark:bg-cyan-500/10 backdrop-blur-md shadow-sm">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               <span className="text-xs font-mono font-semibold tracking-wider uppercase text-cyan-700 dark:text-cyan-300">
-                GJ TECH • BUILD • LEARN • SHIP
+                {t.hero.badge}
               </span>
             </div>
 
             {/* Large Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1] font-sans">
-              Code.
+              {t.hero.code}
               {' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500">
-                Create.
+                {t.hero.create}
               </span>
               {' '}
-              Build.
+              {t.hero.build}
               {' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500">
-                Evolve.
+                {t.hero.evolve}
               </span>
             </h1>
 
             {/* Supporting Subtext */}
             <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed font-sans">
-              Real-world development insights, practical tutorials, and ideas for
-              developers building what comes next. Explore modern React, Next.js,
-              Node.js, AI, APIs, scalable architectures, and everything in between.
+              {t.hero.description}
             </p>
 
             {/* CTAs */}
@@ -60,7 +60,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-500 to-indigo-600 text-slate-950 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_25px_rgba(6,182,212,0.3)] group"
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Explore Articles</span>
+                <span>{t.hero.exploreArticles}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
@@ -69,7 +69,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm border border-slate-300 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200 hover:text-cyan-500 dark:hover:text-cyan-400 hover:border-cyan-500/40 transition-all backdrop-blur-sm"
               >
                 <Layers className="w-4 h-4 text-cyan-400" />
-                <span>Explore Tech Topics</span>
+                <span>{t.hero.exploreTechTopics}</span>
               </Link>
             </div>
 
@@ -79,7 +79,7 @@ export default function Hero() {
                 <strong className="block text-base font-bold text-slate-900 dark:text-white">
                   12+
                 </strong>
-                <span>Deep-Dive Guides</span>
+                <span>{t.hero.deepDiveGuides}</span>
               </div>
 
               <div className="h-7 w-px bg-slate-200 dark:bg-slate-800" />
@@ -88,7 +88,7 @@ export default function Hero() {
                 <strong className="block text-base font-bold text-slate-900 dark:text-white">
                   10+
                 </strong>
-                <span>Tech Topics</span>
+                <span>{t.hero.techTopics}</span>
               </div>
 
               <div className="h-7 w-px bg-slate-200 dark:bg-slate-800" />
@@ -97,7 +97,7 @@ export default function Hero() {
                 <strong className="block text-base font-bold text-cyan-600 dark:text-cyan-400">
                   100%
                 </strong>
-                <span>Developer Focus</span>
+                <span>{t.hero.developerFocus}</span>
               </div>
             </div>
           </motion.div>

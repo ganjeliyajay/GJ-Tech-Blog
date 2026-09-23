@@ -23,6 +23,8 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
+import { localizedPath } from "@/lib/i18n/routes";
+import { useTranslations } from "@/lib/i18n/useTranslations";
 
 type SearchResult = {
   id: string;
@@ -52,15 +54,14 @@ export default function SearchModal({
     SearchResult[]
   >([]);
 
-  const [categories, setCategories] = useState<
-    string[]
-  >([]);
+  const { locale } = useTranslations();
+
+  const [categories, setCategories] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const inputRef =
-    useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -439,7 +440,7 @@ export default function SearchModal({
                       return (
                         <Link
                           key={articleKey}
-                          href={`/blog/${article.slug}`}
+                          href={`${localizedPath(locale)}/blog/${article.slug}`}
                           onClick={
                             handleClose
                           }

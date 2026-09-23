@@ -24,6 +24,8 @@ import ShareButtons from './ShareButtons';
 import RelatedArticles from './RelatedArticles';
 
 import { Article } from '@/types/blog';
+import { useTranslations } from "@/lib/i18n/useTranslations";
+import { localizedPath } from "@/lib/i18n/routes";
 
 interface BlogDetailViewProps {
   article: Article;
@@ -34,6 +36,10 @@ export default function BlogDetailView({
   article,
   articles,
 }: BlogDetailViewProps) {
+  const { t, locale } = useTranslations();
+
+  const homePath = localizedPath(locale);
+
   const { scrollYProgress } = useScroll();
 
   const scaleX = useSpring(scrollYProgress, {
@@ -47,7 +53,7 @@ export default function BlogDetailView({
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Article not found
+            {t.blogDetails.articleNotFound}
           </h1>
 
           <Link
@@ -55,7 +61,7 @@ export default function BlogDetailView({
             className="inline-flex items-center gap-2 mt-4 text-sm text-cyan-500 hover:text-cyan-400"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            {t.blogDetails.backToHome}
           </Link>
         </div>
       </div>
@@ -77,20 +83,20 @@ export default function BlogDetailView({
         <nav className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 mb-8 overflow-x-auto whitespace-nowrap pb-1">
 
           <Link
-            href="/"
+            href={homePath}
             className="hover:text-cyan-400 transition flex items-center gap-1"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            Home
+            {t.blogDetails.home}
           </Link>
 
           <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
 
           <Link
-            href="/#articles"
+            href={`${homePath}/#categories`}
             className="hover:text-cyan-400 transition"
           >
-            Articles
+            {t.blogDetails.articles}
           </Link>
 
           <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
@@ -133,7 +139,10 @@ export default function BlogDetailView({
                 {article.author?.avatar ? (
                   <Image
                     src={article.author.avatar}
-                    alt={article.author.name || 'Author'}
+                    alt={
+                      article.author?.name ||
+                      t.blogDetails.author
+                    }
                     fill
                     className="object-cover"
                     unoptimized
@@ -146,7 +155,10 @@ export default function BlogDetailView({
 
               <div>
                 <span className="block text-sm font-bold text-slate-900 dark:text-white">
-                  {article.author?.name || 'Unknown Author'}
+                  {
+                    article.author?.name ||
+                    t.blogDetails.unknownAuthor
+                  }
                 </span>
 
                 {article.author?.role && (
@@ -314,7 +326,7 @@ export default function BlogDetailView({
             {article.tags?.length ? (
               <div className="pt-8 border-t border-slate-200 dark:border-slate-800 space-y-3">
                 <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Article Tags
+                  {t.blogDetails.articleTags}
                 </span>
 
                 <div className="flex flex-wrap gap-2">
@@ -362,7 +374,7 @@ export default function BlogDetailView({
               <div className="space-y-2">
 
                 <span className="text-xs font-mono font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
-                  Written by
+                  {t.blogDetails.writtenBy}
                 </span>
 
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">
@@ -376,7 +388,7 @@ export default function BlogDetailView({
                 )}
 
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Exploring practical software development, modern web technologies, and scalable application patterns.
+                  {t.blogDetails.authorBio}
                 </p>
 
               </div>

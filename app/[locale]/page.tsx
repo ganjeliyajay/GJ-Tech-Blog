@@ -17,35 +17,62 @@ import {
 
 import { getTopicsFromPosts } from "@/lib/topics";
 
+import {
+  isValidLocale,
+  defaultLocale,
+  type Locale,
+} from "@/lib/i18n/config";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default async function HomePage() {
-  const [featuredArticle, posts, author] = await Promise.all([
-    client.fetch(
-      featuredArticleQuery,
-      {},
-      {
-        cache: "no-store",
-      }
-    ),
+interface HomePageProps {
+  params: Promise<{
+    locale: string;
+  }>;
+}
 
-    client.fetch(
-      postsQuery,
-      {},
-      {
-        cache: "no-store",
-      }
-    ),
+export default async function HomePage({
+  params,
+}: HomePageProps) {
+  const { locale: localeParam } = await params;
 
-    client.fetch(
-      authorQuery,
-      {},
-      {
-        cache: "no-store",
-      }
-    ),
-  ]);
+  const locale: Locale = isValidLocale(
+    localeParam
+  )
+    ? localeParam
+    : defaultLocale;
+
+  const [featuredArticle, posts, author] =
+    await Promise.all([
+      client.fetch(
+        featuredArticleQuery,
+        {
+          locale,
+        },
+        {
+          cache: "no-store",
+        }
+      ),
+
+      client.fetch(
+        postsQuery,
+        {
+          locale,
+        },
+        {
+          cache: "no-store",
+        }
+      ),
+
+      client.fetch(
+        authorQuery,
+        {},
+        {
+          cache: "no-store",
+        }
+      ),
+    ]);
 
   const topics = getTopicsFromPosts(posts);
 
@@ -60,9 +87,13 @@ export default async function HomePage() {
           featuredArticle={featuredArticle}
         />
 
-        <CategorySection posts={posts} />
+        <CategorySection
+          posts={posts}
+        />
 
-        <TrendingArticles article={posts} />
+        <TrendingArticles
+          article={posts}
+        />
 
         <DeveloperTopicsSection
           topics={topics}

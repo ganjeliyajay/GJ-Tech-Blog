@@ -11,8 +11,15 @@ import {
 import BlogDetailView from "@/components/BlogDetails/BlogDetailView";
 import Newsletter from "@/components/HomePage/Newsletter";
 
+import {
+  defaultLocale,
+  isValidLocale,
+  type Locale,
+} from "@/lib/i18n/config";
+
 interface BlogPostPageProps {
   params: Promise<{
+    locale: string;
     slug: string;
   }>;
 }
@@ -20,14 +27,28 @@ interface BlogPostPageProps {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+/* =========================================================
+   METADATA
+   ========================================================= */
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale: localeParam } =
+    await params;
+
+  const locale: Locale = isValidLocale(
+    localeParam
+  )
+    ? localeParam
+    : defaultLocale;
 
   const article = await client.fetch(
     postBySlugQuery,
-    { slug },
+    {
+      slug,
+      locale,
+    },
     {
       cache: "no-store",
     }
@@ -49,8 +70,16 @@ export async function generateMetadata({
     keywords: article.tags || [],
 
     authors: article.author?.name
-      ? [{ name: article.author.name }]
+      ? [
+          {
+            name: article.author.name,
+          },
+        ]
       : undefined,
+
+    alternates: {
+      canonical: `/${locale}/blog/${slug}`,
+    },
 
     openGraph: {
       title: article.title,
@@ -63,12 +92,14 @@ export async function generateMetadata({
 
       publishedTime: article.date,
 
+      locale,
+
       images: article.image
         ? [
-          {
-            url: article.image,
-          },
-        ]
+            {
+              url: article.image,
+            },
+          ]
         : undefined,
     },
 
@@ -88,28 +119,47 @@ export async function generateMetadata({
   };
 }
 
+/* =========================================================
+   BLOG POST PAGE
+   ========================================================= */
+
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
-  const { slug } = await params;
+  const {
+    slug,
+    locale: localeParam,
+  } = await params;
 
-  const [article, articles] = await Promise.all([
-    client.fetch(
-      postBySlugQuery,
-      { slug },
-      {
-        cache: "no-store",
-      }
-    ),
+  const locale: Locale = isValidLocale(
+    localeParam
+  )
+    ? localeParam
+    : defaultLocale;
 
-    client.fetch(
-      postsQuery,
-      {},
-      {
-        cache: "no-store",
-      }
-    ),
-  ]);
+  const [article, articles] =
+    await Promise.all([
+      client.fetch(
+        postBySlugQuery,
+        {
+          slug,
+          locale,
+        },
+        {
+          cache: "no-store",
+        }
+      ),
+
+      client.fetch(
+        postsQuery,
+        {
+          locale,
+        },
+        {
+          cache: "no-store",
+        }
+      ),
+    ]);
 
   if (!article) {
     notFound();

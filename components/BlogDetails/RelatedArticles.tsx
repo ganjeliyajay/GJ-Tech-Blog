@@ -1,10 +1,18 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, Clock, BookOpen } from 'lucide-react';
+import Link from "next/link";
+import Image from "next/image";
 
-import { Article } from '@/types/blog';
+import {
+  ArrowRight,
+  Clock,
+  BookOpen,
+} from "lucide-react";
+
+import { Article } from "@/types/blog";
+
+import { localizedPath } from "@/lib/i18n/routes";
+import { useTranslations } from "@/lib/i18n/useTranslations";
 
 interface RelatedArticlesProps {
   currentArticle: Article;
@@ -15,20 +23,35 @@ export default function RelatedArticles({
   currentArticle,
   articles,
 }: RelatedArticlesProps) {
+  const { locale } = useTranslations();
+
+  const homePath = localizedPath(locale);
+
   const related = [...articles]
-    .filter((article) => article.id !== currentArticle.id)
+    .filter(
+      (article) =>
+        article.id !== currentArticle.id
+    )
     .sort((a, b) => {
       const aSameCategory =
-        a.category === currentArticle.category;
+        a.category ===
+        currentArticle.category;
 
       const bSameCategory =
-        b.category === currentArticle.category;
+        b.category ===
+        currentArticle.category;
 
-      if (aSameCategory && !bSameCategory) {
+      if (
+        aSameCategory &&
+        !bSameCategory
+      ) {
         return -1;
       }
 
-      if (!aSameCategory && bSameCategory) {
+      if (
+        !aSameCategory &&
+        bSameCategory
+      ) {
         return 1;
       }
 
@@ -51,7 +74,7 @@ export default function RelatedArticles({
         </div>
 
         <Link
-          href="/#articles"
+          href={`${homePath}/#categories`}
           className="text-xs font-mono font-semibold text-cyan-600 dark:text-cyan-400 hover:underline flex items-center gap-1"
         >
           View all articles
@@ -66,7 +89,7 @@ export default function RelatedArticles({
           {related.map((article) => (
             <Link
               key={article.id}
-              href={`/blog/${article.slug}`}
+              href={`${homePath}/blog/${article.slug}`}
               className="group flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 hover:bg-slate-50 dark:hover:bg-slate-900/90 hover:border-cyan-500/40 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
             >
               <div>
@@ -100,7 +123,8 @@ export default function RelatedArticles({
                   <Clock className="w-3 h-3 text-cyan-400" />
 
                   <span>
-                    {article.readingTime || '5 min read'}
+                    {article.readingTime ||
+                      "5 min read"}
                   </span>
                 </div>
 
@@ -117,7 +141,9 @@ export default function RelatedArticles({
 
               {/* Footer */}
               <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-mono font-semibold text-cyan-600 dark:text-cyan-400">
-                <span>Read Deep-Dive</span>
+                <span>
+                  Read Deep-Dive
+                </span>
 
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>

@@ -4,14 +4,18 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Search, Menu, Sparkles } from "lucide-react";
+import Image from "next/image";
 
 import SearchModal from "./SearchModal";
 import MobileMenu from "./MobileMenu";
-import Image from "next/image";
+import LanguageSwitcher from "./LanguageSwitcher";
+
+import { useTranslations } from "@/lib/i18n/useTranslations";
+import { locales, type Locale } from "@/lib/i18n/config";
+import { localizedPath } from "@/lib/i18n/routes";
 
 type SectionId =
   | "home"
-  | "articles"
   | "categories"
   | "about";
 
@@ -21,46 +25,65 @@ type NavLink = {
   href: string;
 };
 
-const navLinks: NavLink[] = [
-  {
-    name: "Home",
-    id: "home",
-    href: "/",
-  },
-  {
-    name: "Articles",
-    id: "articles",
-    href: "/#articles",
-  },
-  {
-    name: "Categories",
-    id: "categories",
-    href: "/#categories",
-  },
-  {
-    name: "About",
-    id: "about",
-    href: "/#about",
-  },
-];
+function getLocaleFromPathname(
+  pathname: string
+): Locale {
+  const firstSegment = pathname.split("/")[1];
 
-const sectionIds: SectionId[] = [
-  "articles",
-  "categories",
-  "about",
-];
+  if (locales.includes(firstSegment as Locale)) {
+    return firstSegment as Locale;
+  }
+
+  return "en";
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] =
+    useState(false);
+
   const [activeSection, setActiveSection] =
     useState<SectionId>("home");
 
   const pathname = usePathname();
   const router = useRouter();
 
-  const isHomepage = pathname === "/";
+  const { t } = useTranslations();
+
+  const currentLocale =
+    getLocaleFromPathname(pathname);
+
+  const isHomepage =
+    pathname === `/${currentLocale}` ||
+    pathname === `/${currentLocale}/`;
+
+  const navLinks: NavLink[] = [
+    {
+      name: t.nav.home,
+      id: "home",
+      href: localizedPath(currentLocale),
+    },
+    {
+      name: t.nav.categories,
+      id: "categories",
+      href: `${localizedPath(
+        currentLocale
+      )}/#categories`,
+    },
+    {
+      name: t.nav.about,
+      id: "about",
+      href: `${localizedPath(
+        currentLocale
+      )}/#about`,
+    },
+  ];
+
+  const sectionIds: SectionId[] = [
+    "categories",
+    "about",
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,7 +97,10 @@ export default function Navbar() {
     });
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
     };
   }, []);
 
@@ -85,6 +111,7 @@ export default function Navbar() {
         event.key.toLowerCase() === "k"
       ) {
         event.preventDefault();
+
         setSearchOpen((prev) => !prev);
         setMobileMenuOpen(false);
       }
@@ -95,16 +122,24 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
     };
   }, []);
 
   useEffect(() => {
     document.body.style.overflow =
-      searchOpen || mobileMenuOpen ? "hidden" : "";
+      searchOpen || mobileMenuOpen
+        ? "hidden"
+        : "";
 
     return () => {
       document.body.style.overflow = "";
@@ -125,10 +160,12 @@ export default function Navbar() {
       }
 
       const offset = 140;
+
       let currentSection: SectionId = "home";
 
       for (const id of sectionIds) {
-        const element = document.getElementById(id);
+        const element =
+          document.getElementById(id);
 
         if (!element) {
           continue;
@@ -147,14 +184,16 @@ export default function Navbar() {
     };
 
     const handleHashChange = () => {
-      const hash = window.location.hash.replace("#", "");
+      const hash =
+        window.location.hash.replace("#", "");
 
       if (
-        hash === "articles" ||
         hash === "categories" ||
         hash === "about"
       ) {
-        setActiveSection(hash);
+        setActiveSection(
+          hash as SectionId
+        );
       } else {
         updateActiveSection();
       }
@@ -165,38 +204,42 @@ export default function Navbar() {
     window.addEventListener(
       "scroll",
       updateActiveSection,
-      { passive: true },
+      {
+        passive: true,
+      }
     );
 
     window.addEventListener(
       "hashchange",
-      handleHashChange,
+      handleHashChange
     );
 
     window.addEventListener(
       "popstate",
-      handleHashChange,
+      handleHashChange
     );
 
     return () => {
       window.removeEventListener(
         "scroll",
-        updateActiveSection,
+        updateActiveSection
       );
 
       window.removeEventListener(
         "hashchange",
-        handleHashChange,
+        handleHashChange
       );
 
       window.removeEventListener(
         "popstate",
-        handleHashChange,
+        handleHashChange
       );
     };
   }, [isHomepage]);
 
-  const scrollToSection = (id: SectionId) => {
+  const scrollToSection = (
+    id: SectionId
+  ) => {
     if (id === "home") {
       window.scrollTo({
         top: 0,
@@ -209,14 +252,15 @@ export default function Navbar() {
         window.history.pushState(
           null,
           "",
-          "/",
+          `/${currentLocale}`
         );
       }
 
       return;
     }
 
-    const element = document.getElementById(id);
+    const element =
+      document.getElementById(id);
 
     if (!element) {
       return;
@@ -234,7 +278,7 @@ export default function Navbar() {
     window.history.pushState(
       null,
       "",
-      `#${id}`,
+      `/${currentLocale}/#${id}`
     );
 
     window.scrollTo({
@@ -245,7 +289,7 @@ export default function Navbar() {
 
   const handleNavClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
-    link: NavLink,
+    link: NavLink
   ) => {
     if (!isHomepage) {
       return;
@@ -260,7 +304,7 @@ export default function Navbar() {
     const scrollToNewsletter = () => {
       const element =
         document.getElementById(
-          "newsletter-section",
+          "newsletter-section"
         );
 
       if (!element) {
@@ -285,7 +329,9 @@ export default function Navbar() {
       return;
     }
 
-    router.push("/#newsletter-section");
+    router.push(
+      `/${currentLocale}/#newsletter-section`
+    );
 
     setTimeout(() => {
       scrollToNewsletter();
@@ -295,14 +341,18 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${scrolled
-          ? "bg-[#080c14]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-[0_4px_25px_rgba(0,0,0,0.4)]"
-          : "bg-[#080c14]/40 backdrop-blur-sm border-b border-transparent"
-          }`}
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+          scrolled
+            ? "bg-[#080c14]/90 backdrop-blur-xl border-b border-slate-800/80 shadow-[0_4px_25px_rgba(0,0,0,0.4)]"
+            : "bg-[#080c14]/40 backdrop-blur-sm border-b border-transparent"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+          {/* Logo */}
           <Link
-            href="/"
+            href={localizedPath(
+              currentLocale
+            )}
             className="group flex items-center gap-3"
             onClick={(event) => {
               if (isHomepage) {
@@ -317,7 +367,7 @@ export default function Navbar() {
                 alt="GJ Tech"
                 width={40}
                 height={40}
-               className="h-10 w-10 object-contain scale-125"
+                className="h-10 w-10 object-contain scale-125"
                 priority
               />
 
@@ -335,6 +385,7 @@ export default function Navbar() {
             </div>
           </Link>
 
+          {/* Desktop Navigation */}
           <nav
             className="hidden md:flex items-center gap-1 px-4 py-1.5 rounded-full border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm"
             aria-label="Main Navigation"
@@ -351,16 +402,19 @@ export default function Navbar() {
                   onClick={(event) =>
                     handleNavClick(
                       event,
-                      link,
+                      link
                     )
                   }
                   aria-current={
-                    isActive ? "page" : undefined
+                    isActive
+                      ? "page"
+                      : undefined
                   }
-                  className={`relative px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${isActive
-                    ? "text-cyan-400 font-semibold"
-                    : "text-slate-300 hover:text-white"
-                    }`}
+                  className={`relative px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                    isActive
+                      ? "text-cyan-400 font-semibold"
+                      : "text-slate-300 hover:text-white"
+                  }`}
                 >
                   {link.name}
 
@@ -372,6 +426,10 @@ export default function Navbar() {
             })}
           </nav>
 
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
+          {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             <button
               id="navbar-search-btn"
@@ -386,7 +444,7 @@ export default function Navbar() {
               <Search className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
 
               <span className="font-sans">
-                Search...
+                {t.nav.search}...
               </span>
 
               <kbd className="ml-1.5 px-1.5 py-0.5 rounded bg-slate-800 text-[10px] font-mono text-slate-400 border border-slate-700">
@@ -397,14 +455,18 @@ export default function Navbar() {
             <button
               id="navbar-subscribe-btn"
               type="button"
-              onClick={handleSubscribeClick}
+              onClick={
+                handleSubscribeClick
+              }
               className="relative inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide bg-gradient-to-r from-cyan-500 to-indigo-600 text-slate-950 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(6,182,212,0.25)]"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              Subscribe
+
+              {t.newsletter.subscribe}
             </button>
           </div>
 
+          {/* Mobile Actions */}
           <div className="flex items-center gap-2 md:hidden">
             <button
               type="button"
@@ -426,7 +488,9 @@ export default function Navbar() {
               }}
               className="p-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition-colors"
               aria-label="Open navigation menu"
-              aria-expanded={mobileMenuOpen}
+              aria-expanded={
+                mobileMenuOpen
+              }
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -434,11 +498,15 @@ export default function Navbar() {
         </div>
       </header>
 
+      {/* Search Modal */}
       <SearchModal
         isOpen={searchOpen}
-        onClose={() => setSearchOpen(false)}
+        onClose={() =>
+          setSearchOpen(false)
+        }
       />
 
+      {/* Mobile Menu */}
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() =>
@@ -451,13 +519,20 @@ export default function Navbar() {
           if (!isHomepage) {
             router.push(
               id === "home"
-                ? "/"
-                : `/#${id}`,
+                ? localizedPath(
+                    currentLocale
+                  )
+                : `${localizedPath(
+                    currentLocale
+                  )}/#${id}`
             );
+
             return;
           }
 
-          scrollToSection(id as SectionId);
+          scrollToSection(
+            id as SectionId
+          );
         }}
         onOpenSearch={() => {
           setMobileMenuOpen(false);

@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "home": "Home",
+    "categories": "Categories",
+    "about": "About",
+    "search": "Search",
+    "topics": "Topics"
+  },
+
+  "hero": {
+    "badge": "GJ TECH • BUILD • LEARN • SHIP",
+    "code": "Code.",
+    "create": "Create.",
+    "build": "Build.",
+    "evolve": "Evolve.",
+    "description": "Real-world development insights, practical tutorials, and ideas for developers building what comes next. Explore modern React, Next.js, Node.js, AI, APIs, scalable architectures, and everything in between.",
+    "exploreArticles": "Explore Articles",
+    "exploreTechTopics": "Explore Tech Topics",
+    "deepDiveGuides": "Deep-Dive Guides",
+    "techTopics": "Tech Topics",
+    "developerFocus": "Developer Focus"
+  },
+
+  "featuredArticle": {
+    "title": "Featured Editorial",
+    "editorsChoice": "EDITOR'S CHOICE",
+    "imageAlt": "Featured article image",
+    "imageUnavailable": "Image unavailable",
+    "noImage": "No Image",
+    "author": "Author",
+    "readArticle": "Read Article"
+  },
+
+  "categories": {
+    "discoverContent": "DISCOVER CONTENT",
+    "exploreByTechnology": "Explore by Technology",
+    "active": "Active:",
+    "article": "Article",
+    "articles": "Articles"
+  },
+
+  "trendingArticles": {
+    "title": "Trending This Week",
+    "highReadership": "HIGH READERSHIP",
+    "author": "Author",
+    "noArticles": "No trending articles yet.",
+    "sanityInstruction": "Mark articles with a trending rank from Sanity Studio."
+  },
+
+  "developerTopics": {
+    "ecosystemArchitecture": "ECOSYSTEM ARCHITECTURE",
+    "title": "Technology Ecosystem",
+    "description": "Curated topic tracks covering the modern web developer toolchain from core engines to cloud infrastructure.",
+    "specializedTracks": "Specialized Tracks",
+    "noTopics": "No technology topics available yet.",
+    "noTopicsDescription": "Topics will appear automatically when blog posts are published."
+  },
+
+  "authorSection": {
+    "active": "Active",
+    "opening": "Opening",
+    "profile": "profile",
+    "editorialPerspective": "EDITORIAL PERSPECTIVE",
+    "heading": "Built by a Developer, for Developers.",
+    "coreEngineeringArsenal": "Core Engineering Arsenal",
+    "viewPortfolio": "View My Portfolio"
+  },
+
+  "newsletter": {
+    "badge": "WEEKLY ARCHITECTURAL DISPATCH",
+    "title": "Level Up Your Development",
+    "description": "Get practical tutorials, developer tips and technology insights delivered straight to your inbox. Zero spam. Pure engineering.",
+    "invalidEmail": "Please provide a valid developer email address",
+    "subscribeError": "Unable to subscribe. Please try again.",
+    "alreadySubscribed": "You're already subscribed to GJ Tech.",
+    "successMessage": "Welcome to GJ Tech! Practical insights incoming.",
+    "genericError": "Something went wrong. Please try again.",
+    "subscriptionConfirmed": "Subscription confirmed!",
+    "subscribe": "Subscribe",
+    "communityMessage": "You are now part of the GJ Tech community.",
+    "emailPlaceholder": "developer@company.com",
+    "subscribing": "Subscribing...",
+    "joinNewsletter": "Join the Newsletter",
+    "privacyNote": "Unsubscribe anytime with 1-click. Never shared."
+  },
+
+  "footer": {
+    "devPublication": "DEV PUBLICATION",
+    "description": "Building, learning and sharing ideas about the modern web. Curated tutorials, architectural teardowns, and deep-dive engineering manuals.",
+    "explore": "Explore",
+    "categories": "Categories",
+    "about": "About",
+    "topics": "Topics",
+    "connect": "Connect",
+    "backToTop": "Back to top",
+    "copyright": "© 2026 GJ Tech. Built with Next.js.",
+    "designedForBuilders": "Designed for builders",
+    "byAuthor": "by Ganjeliya Jay",
+    "opening": "Opening",
+    "profile": "profile"
+  },
+  "blogDetails": {
+  "articleNotFound": "Article not found",
+  "backToHome": "Back to Home",
+  "home": "Home",
+  "articles": "Articles",
+  "author": "Author",
+  "unknownAuthor": "Unknown Author",
+  "articleTags": "Article Tags",
+  "writtenBy": "Written by",
+  "authorBio": "Exploring practical software development, modern web technologies, and scalable application patterns."
+}
+}

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslations } from "@/lib/i18n/useTranslations";
+import { localizedPath } from "@/lib/i18n/routes";
 
 import { motion } from 'framer-motion';
 
@@ -33,6 +35,8 @@ export default function ArticleCard({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  const { locale } = useTranslations();
+
   return (
     <motion.div
       layout
@@ -43,15 +47,14 @@ export default function ArticleCard({
         duration: 0.4,
         delay: (index % 6) * 0.05,
       }}
-      className={`group relative flex flex-col justify-between rounded-2xl border transition-all duration-300 overflow-hidden ${
-        isHighlight
+      className={`group relative flex flex-col justify-between rounded-2xl border transition-all duration-300 overflow-hidden ${isHighlight
           ? 'border-slate-300 dark:border-slate-800 bg-gradient-to-b from-white via-white to-slate-50 dark:from-slate-900/90 dark:via-slate-900/70 dark:to-slate-950/80 shadow-lg hover:border-cyan-500/50 hover:shadow-cyan-500/10'
           : 'border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-900/40 hover:border-cyan-500/40 hover:bg-slate-50 dark:hover:bg-slate-900/70 shadow-sm hover:shadow-xl'
-      } hover:-translate-y-1.5`}
+        } hover:-translate-y-1.5`}
     >
       {/* ================= IMAGE ================= */}
 
-      <Link href={`/blog/${article?.slug}`} className="block relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950">
+      <Link href={`${localizedPath(locale)}/blog/${article?.slug}`} className="block relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950">
 
         {article?.image ? (
           <>
@@ -63,11 +66,10 @@ export default function ArticleCard({
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               unoptimized
-              className={`object-cover transition-all duration-500 ease-out ${
-                imageLoaded
+              className={`object-cover transition-all duration-500 ease-out ${imageLoaded
                   ? 'opacity-100'
                   : 'opacity-0'
-              } group-hover:scale-[1.04]`}
+                } group-hover:scale-[1.04]`}
               onLoad={() => {
                 setImageLoaded(true);
               }}
@@ -176,7 +178,7 @@ export default function ArticleCard({
 
         {/* Title */}
 
-        <Link href={`/blog/${article?.slug}`}>
+        <Link href={`${localizedPath(locale)}/blog/${article?.slug}`}>
           <h3 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2 leading-snug">
             {article?.title}
           </h3>
@@ -221,7 +223,7 @@ export default function ArticleCard({
         {/* Read */}
 
         <Link
-          href={`/blog/${article?.slug}`}
+          href={`${localizedPath(locale)}/blog/${article?.slug}`} 
           className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-600 dark:text-cyan-400 group-hover:text-cyan-500 transition-colors"
           aria-label={`Read ${article?.title}`}
         >
