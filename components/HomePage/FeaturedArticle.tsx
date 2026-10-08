@@ -39,7 +39,7 @@ interface FeaturedArticleProps {
 export default function FeaturedArticle({
   featuredArticle,
 }: FeaturedArticleProps) {
-  const { t,locale } = useTranslations();
+  const { t, locale } = useTranslations();
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -94,11 +94,10 @@ export default function FeaturedArticle({
                     sizes="(max-width: 1024px) 100vw, 58vw"
                     unoptimized
                     priority
-                    className={`object-cover transition-all duration-500 ease-out ${
-                      imageLoaded
+                    className={`object-cover transition-all duration-500 ease-out ${imageLoaded
                         ? "opacity-100"
                         : "opacity-0"
-                    } group-hover:scale-[1.04]`}
+                      } group-hover:scale-[1.04]`}
                     onLoad={() => {
                       setImageLoaded(true);
                     }}
@@ -235,7 +234,6 @@ export default function FeaturedArticle({
                   <div className="relative w-10 h-10 shrink-0 rounded-full overflow-hidden border border-cyan-500/30 bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
 
                     {featuredArticle?.author?.avatar ? (
-                      console.log(featuredArticle?.author?.avatar),
                       <Image
                         src={featuredArticle.author.avatar}
                         alt={
