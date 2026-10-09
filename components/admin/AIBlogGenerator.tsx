@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
     Sparkles,
@@ -42,15 +42,91 @@ type GeneratedData = {
     };
 };
 
+type QueueTopic = {
+    _id: string;
+    topic: string;
+    status: "pending" | "processing" | "completed" | "failed";
+    createdAt: string;
+    processedAt?: string;
+    error?: string;
+};
+
 export default function AIBlogGenerator() {
     const router = useRouter();
-
     const [topic, setTopic] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [result, setResult] = useState<GeneratedData | null>(null);
     const [copiedId, setCopiedId] = useState(false);
     const [loggingOut, setLoggingOut] = useState(false);
+
+    const [queueTopics, setQueueTopics] = useState<QueueTopic[]>([]);
+    const [queueTopicInput, setQueueTopicInput] = useState("");
+    const [queueLoading, setQueueLoading] = useState(false);
+    const [queueMessage, setQueueMessage] = useState("");
+
+    const loadQueueTopics = async () => {
+        setQueueLoading(true);
+
+        try {
+            const response = await fetch("/api/automation/topics", {
+                cache: "no-store",
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data?.error || "Failed to load topic queue.");
+            }
+
+            setQueueTopics(data.topics ?? []);
+        } catch (error) {
+            setQueueMessage(
+                error instanceof Error ? error.message : "Failed to load topic queue."
+            );
+        } finally {
+            setQueueLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        void loadQueueTopics();
+    }, []);
+
+    const handleAddQueueTopic = async () => {
+        const value = queueTopicInput.trim();
+
+        if (value.length < 3 || value.length > 200) {
+            setQueueMessage("Topic must be between 3 and 200 characters.");
+            return;
+        }
+
+        setQueueLoading(true);
+        setQueueMessage("");
+
+        try {
+            const response = await fetch("/api/automation/topics", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ topic: value }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data?.error || "Failed to add topic.");
+            }
+
+            setQueueTopicInput("");
+            setQueueMessage("Topic added to the queue.");
+            await loadQueueTopics();
+        } catch (error) {
+            setQueueMessage(
+                error instanceof Error ? error.message : "Failed to add topic."
+            );
+        } finally {
+            setQueueLoading(false);
+        }
+    };
 
     const handleLogout = async () => {
         setLoggingOut(true);
@@ -115,7 +191,7 @@ export default function AIBlogGenerator() {
             setCopiedId(true);
             setTimeout(() => setCopiedId(false), 2000);
         } catch {
-            // Clipboard fallback
+
         }
     };
 
@@ -123,10 +199,8 @@ export default function AIBlogGenerator() {
 
     return (
         <div className="min-h-screen bg-[#090d16] text-zinc-100 flex flex-col font-sans selection:bg-zinc-800 selection:text-zinc-100">
-            {/* Top Header */}
             <header className="sticky top-0 z-30 w-full border-b border-zinc-800/80 bg-[#090d16]/85 backdrop-blur-md">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-                    {/* Left: Brand mark & Section label */}
                     <div className="flex items-center gap-3 min-w-0">
                         <Link
                             href="/"
@@ -145,7 +219,6 @@ export default function AIBlogGenerator() {
                         </span>
                     </div>
 
-                    {/* Right: Admin Status & Logout */}
                     <div className="flex items-center gap-2 sm:gap-3">
                         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium text-zinc-300 bg-zinc-900 border border-zinc-800">
                             <ShieldCheck className="w-3.5 h-3.5 text-zinc-400" />
@@ -170,7 +243,6 @@ export default function AIBlogGenerator() {
                 </div>
             </header>
 
-            {/* Dashboard Workspace */}
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-7">
                 {/* Page Introduction */}
                 <div className="space-y-1.5">
@@ -197,7 +269,6 @@ export default function AIBlogGenerator() {
                     </p>
                 </div>
 
-                {/* Notifications Banner */}
                 {message && (
                     <div
                         role="alert"
@@ -215,7 +286,6 @@ export default function AIBlogGenerator() {
                     </div>
                 )}
 
-                {/* AI Blog Generation Workspace */}
                 <section
                     aria-labelledby="workspace-heading"
                     className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-sm p-6 sm:p-7 shadow-sm space-y-6"
@@ -305,7 +375,97 @@ export default function AIBlogGenerator() {
                     </div>
                 </section>
 
-                {/* Professional Loading State */}
+                <section
+                    aria-labelledby="topic-queue-heading"
+                    className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-sm p-6 sm:p-7 shadow-sm space-y-5"
+                >
+                    <div className="flex items-center justify-between gap-3 border-b border-zinc-800/80 pb-4">
+                        <div>
+                            <h2
+                                id="topic-queue-heading"
+                                className="text-base font-semibold text-zinc-100"
+                            >
+                                Topic Queue
+                            </h2>
+                            <p className="text-xs text-zinc-400 mt-1">
+                                Add topics for scheduled multilingual blog generation.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={() => void loadQueueTopics()}
+                            disabled={queueLoading}
+                            className="rounded-lg border border-zinc-700 px-3 py-2 text-xs text-zinc-200 hover:bg-zinc-800 disabled:opacity-50"
+                        >
+                            {queueLoading ? "Loading..." : "Refresh"}
+                        </button>
+                    </div>
+
+                    <form
+                        className="flex flex-col sm:flex-row gap-3"
+                        onSubmit={(event) => {
+                            event.preventDefault();
+                            void handleAddQueueTopic();
+                        }}
+                    >
+                        <input
+                            value={queueTopicInput}
+                            onChange={(event) => setQueueTopicInput(event.target.value)}
+                            placeholder="Enter a technical blog topic..."
+                            maxLength={200}
+                            className="min-w-0 flex-1 rounded-lg border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+                        />
+
+                        <button
+                            type="submit"
+                            disabled={queueLoading}
+                            className="rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-950 hover:bg-white disabled:opacity-50"
+                        >
+                            Add Topic
+                        </button>
+                    </form>
+
+                    {queueMessage && (
+                        <p role="status" className="text-xs text-zinc-300">
+                            {queueMessage}
+                        </p>
+                    )}
+
+                    <div className="space-y-3">
+                        {queueTopics.length === 0 && !queueLoading ? (
+                            <p className="rounded-lg border border-dashed border-zinc-800 p-5 text-center text-sm text-zinc-400">
+                                No topics in the queue yet.
+                            </p>
+                        ) : (
+                            queueTopics.map((item) => (
+                                <div
+                                    key={item._id}
+                                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-950/50 p-4"
+                                >
+                                    <div className="min-w-0">
+                                        <p className="break-words text-sm font-medium text-zinc-100">
+                                            {item.topic}
+                                        </p>
+                                        <p className="mt-1 text-xs text-zinc-500">
+                                            Added {new Date(item.createdAt).toLocaleString()}
+                                        </p>
+                                        {item.error && (
+                                            <p className="mt-2 break-words text-xs text-rose-300">
+                                                {item.error}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <span className="inline-flex w-fit shrink-0 rounded-md border border-zinc-700 bg-zinc-900 px-2.5 py-1 text-xs text-zinc-300">
+                                        {item.status}
+                                    </span>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </section>
+
                 {loading && (
                     <section
                         aria-live="polite"
