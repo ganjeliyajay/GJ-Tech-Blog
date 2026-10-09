@@ -39,7 +39,10 @@ export async function PATCH(
 
         if (body?.action !== "retry" || existing.status !== "failed") {
             return NextResponse.json(
-                { success: false, error: "Only failed topics can be retried." },
+                {
+                    success: false,
+                    error: "Only failed topics can be retried.",
+                },
                 { status: 400 }
             );
         }
@@ -47,7 +50,7 @@ export async function PATCH(
         const topic = await adminClient
             .patch(id)
             .set({ status: "pending" })
-            .unset(["error", "processedAt", "translationId"])
+            .unset(["error", "processedAt"])
             .commit();
 
         return NextResponse.json({ success: true, topic });
@@ -87,7 +90,10 @@ export async function DELETE(
             );
         }
 
-        if (existing.status !== "pending" && existing.status !== "failed") {
+        if (
+            existing.status !== "pending" &&
+            existing.status !== "failed"
+        ) {
             return NextResponse.json(
                 {
                     success: false,

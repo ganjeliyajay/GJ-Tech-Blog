@@ -85,8 +85,8 @@ function normalizeCallout(
 
         const type =
             callout.type === "tip" ||
-            callout.type === "important" ||
-            callout.type === "note"
+                callout.type === "important" ||
+                callout.type === "note"
                 ? callout.type
                 : "note";
 
@@ -204,13 +204,13 @@ function normalizeBlog(
             (section: any, index: number) => ({
                 id:
                     typeof section.id === "string" &&
-                    section.id.trim()
+                        section.id.trim()
                         ? section.id.trim()
                         : `section-${index + 1}`,
 
                 title:
                     typeof section.title === "string" &&
-                    section.title.trim()
+                        section.title.trim()
                         ? section.title.trim()
                         : `Section ${index + 1}`,
 
@@ -247,7 +247,7 @@ function normalizeBlog(
     if (
         conclusionIndex !== -1 &&
         conclusionIndex !==
-            sections.length - 1
+        sections.length - 1
     ) {
         const conclusion =
             sections.splice(
@@ -722,11 +722,7 @@ export const createSanityDraft = async (
         );
     }
 
-    const postId =
-        crypto.randomUUID();
-
-    const draftId =
-        `drafts.${postId}`;
+    const draftId = `drafts.${translationId}-${language}`;
 
     const draftDocument = {
         _id: draftId,
