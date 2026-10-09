@@ -11,6 +11,7 @@ export const categories = [
     "MERN",
     "AI",
     "UI/UX",
+    "DevOps",
     "Git",
     "Career",
 ] as const;

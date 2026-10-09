@@ -47,6 +47,7 @@ type QueueTopic = {
     topic: string;
     status: "pending" | "processing" | "completed" | "failed";
     createdAt: string;
+    scheduledAt?: string;
     processedAt?: string;
     error?: string;
 };
@@ -64,6 +65,7 @@ export default function AIBlogGenerator() {
     const [queueTopicInput, setQueueTopicInput] = useState("");
     const [queueLoading, setQueueLoading] = useState(false);
     const [queueMessage, setQueueMessage] = useState("");
+    const [queueScheduledAt, setQueueScheduledAt] = useState("");
 
     const loadQueueTopics = async () => {
         setQueueLoading(true);
@@ -100,6 +102,19 @@ export default function AIBlogGenerator() {
             return;
         }
 
+        const scheduledDate = queueScheduledAt
+            ? new Date(queueScheduledAt)
+            : null;
+
+        if (
+            scheduledDate &&
+            (Number.isNaN(scheduledDate.getTime()) ||
+                scheduledDate.getTime() <= Date.now())
+        ) {
+            setQueueMessage("Please choose a future date and time.");
+            return;
+        }
+
         setQueueLoading(true);
         setQueueMessage("");
 
@@ -107,7 +122,10 @@ export default function AIBlogGenerator() {
             const response = await fetch("/api/automation/topics", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ topic: value }),
+                body: JSON.stringify({
+                    topic: value,
+                    scheduledAt: scheduledDate?.toISOString(),
+                }),
             });
 
             const data = await response.json();
@@ -117,6 +135,7 @@ export default function AIBlogGenerator() {
             }
 
             setQueueTopicInput("");
+            setQueueScheduledAt("");
             setQueueMessage("Topic added to the queue.");
             await loadQueueTopics();
         } catch (error) {
@@ -403,26 +422,54 @@ export default function AIBlogGenerator() {
                     </div>
 
                     <form
-                        className="flex flex-col sm:flex-row gap-3"
+                        className="flex flex-col gap-3 sm:flex-row sm:items-end"
                         onSubmit={(event) => {
                             event.preventDefault();
                             void handleAddQueueTopic();
                         }}
                     >
-                        <input
-                            value={queueTopicInput}
-                            onChange={(event) => setQueueTopicInput(event.target.value)}
-                            placeholder="Enter a technical blog topic..."
-                            maxLength={200}
-                            className="min-w-0 flex-1 rounded-lg border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
-                        />
+                        <div className="min-w-0 flex-1 space-y-2">
+                            <label
+                                htmlFor="queue-topic-input"
+                                className="block text-xs font-medium text-zinc-300"
+                            >
+                                Blog Topic
+                            </label>
+                            <input
+                                id="queue-topic-input"
+                                value={queueTopicInput}
+                                onChange={(event) => setQueueTopicInput(event.target.value)}
+                                placeholder="Enter a technical blog topic..."
+                                maxLength={200}
+                                className="w-full min-w-0 rounded-lg border border-zinc-800 bg-zinc-950/80 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500"
+                            />
+                        </div>
+
+                        <div className="space-y-2 sm:w-64">
+                            <label
+                                htmlFor="queue-scheduled-at"
+                                className="block text-xs font-medium text-zinc-300"
+                            >
+                                Schedule Date & Time
+                            </label>
+                            <input
+                                id="queue-scheduled-at"
+                                type="datetime-local"
+                                value={queueScheduledAt}
+                                onChange={(event) => setQueueScheduledAt(event.target.value)}
+                                className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100"
+                            />
+                            <p className="text-[11px] text-zinc-500">
+                                Leave empty to use the default queue schedule.
+                            </p>
+                        </div>
 
                         <button
                             type="submit"
                             disabled={queueLoading}
-                            className="rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-950 hover:bg-white disabled:opacity-50"
+                            className="rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-950 hover:bg-white disabled:opacity-50 sm:shrink-0"
                         >
-                            Add Topic
+                            {queueLoading ? "Adding..." : "Add Topic"}
                         </button>
                     </form>
 
@@ -450,6 +497,11 @@ export default function AIBlogGenerator() {
                                         <p className="mt-1 text-xs text-zinc-500">
                                             Added {new Date(item.createdAt).toLocaleString()}
                                         </p>
+                                        {item.scheduledAt && (
+                                            <p className="mt-1 text-xs text-sky-300">
+                                                Scheduled for {new Date(item.scheduledAt).toLocaleString()}
+                                            </p>
+                                        )}
                                         {item.error && (
                                             <p className="mt-2 break-words text-xs text-rose-300">
                                                 {item.error}

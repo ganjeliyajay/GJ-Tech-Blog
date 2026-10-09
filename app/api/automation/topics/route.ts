@@ -19,6 +19,7 @@ export async function GET() {
                 topic,
                 status,
                 createdAt,
+                scheduledAt,
                 processedAt,
                 translationId,
                 error
@@ -46,6 +47,21 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const topic = typeof body?.topic === "string" ? body.topic.trim() : "";
 
+        const scheduledAt =
+            typeof body?.scheduledAt === "string"
+                ? new Date(body.scheduledAt)
+                : new Date();
+
+        if (Number.isNaN(scheduledAt.getTime())) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Invalid scheduled date and time.",
+                },
+                { status: 400 }
+            );
+        }
+
         if (topic.length < 3 || topic.length > 200) {
             return NextResponse.json(
                 {
@@ -61,6 +77,8 @@ export async function POST(request: NextRequest) {
             topic,
             status: "pending",
             createdAt: new Date().toISOString(),
+            scheduledAt: scheduledAt.toISOString(),
+
         });
 
         return NextResponse.json(

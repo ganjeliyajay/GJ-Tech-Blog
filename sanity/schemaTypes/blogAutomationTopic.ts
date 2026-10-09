@@ -34,6 +34,11 @@ export const blogAutomationTopicType = defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
+            name: "scheduledAt",
+            title: "Scheduled At",
+            type: "datetime",
+        }),
+        defineField({
             name: "processedAt",
             title: "Processed At",
             type: "datetime",
